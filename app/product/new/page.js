@@ -1,12 +1,21 @@
-import ProductForm from "../_components/ProductForm"
+import { BaseForm } from "@/components/form/BaseForm";
+import { InputField } from "@/components/form/field";
+import { createProductAction } from "@/app/actions/productActions";
+import { z } from "zod";
 
-export default function createProduct() {
-    return (
-        <div className="mx-auto p-4">
-            <h1>Tambah Produk</h1>
-            <div className="mx-auto p-4 max-w-lg">
-                <ProductForm />
-            </div>
-        </div>
-    )
+const schema = z.object({
+  nama: z.string().min(1, "Nama wajib diisi"),
+});
+
+export default function CreateProductPage() {
+  return (
+    <BaseForm
+      action={createProductAction}
+      schema={schema}
+      submitLabel="Tambah Produk"
+      successMessage="Produk berhasil ditambahkan"
+    >
+      <InputField name="nama" label="Nama Produk" />
+    </BaseForm>
+  );
 }

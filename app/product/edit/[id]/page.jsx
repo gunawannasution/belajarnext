@@ -1,34 +1,24 @@
-// /app/edit/[id]/page.jsx
-import prisma from "../../../lib/prisma"
-import ProductForm from "../../_components/ProductForm"
-import { notFound } from "next/navigation"
+import { BaseForm } from "@/components/form/BaseForm";
+import { InputField } from "@/components/form/field";
+import { updateProductAction } from "@/app/actions/productActions";
+import prisma from "@/app/lib/prisma";
+import { z } from "zod";
+
+const schema = z.object({
+  nama: z.string().min(1, "Nama wajib diisi"),
+});
 
 export default async function EditProductPage({ params }) {
-    // 1. Di Next.js terbaru (2026), params harus di-await
-    const { id } = await params
+  const product = await prisma.product.findUnique({ where: { id: params.id } });
 
-    // 2. Ambil data dari database
-    const product = await prisma.product.findUnique({
-        where: { id: Number(id) },
-    })
-
-    // 3. Jika tidak ada, arahkan ke halaman 404 standar Next.js
-    if (!product) {
-        notFound()
-    }
-
-    // 4. Siapkan data untuk dikirim ke form (Sesuaikan key dengan 'name' di form)
-    const initialData = {
-        id: product.id,
-        nama: product.nama,
-        // tambahkan field lain jika ada, misal: harga: product.harga
-    }
-
-    return (
-        <div className="p-4 max-w-md mx-auto">
-            <h1 className="text-xl font-semibold mb-4">Edit Produk</h1>
-            {/* 5. Pastikan variabel yang dikirim sama dengan yang didefinisikan */}
-            <ProductForm defaultValues={initialData} />
-        </div>
-    )
+  return (
+    <BaseForm
+      action={updateProductAction.bind(null, product.id)}
+      schema={schema}
+      submitLabel="Update Produk"
+      successMessage="Produk berhasil diperbarui"
+    >
+      <InputField name="nama" label="Nama Produk" defaultValue={product.nama} />
+    </BaseForm>
+  );
 }
