@@ -16,13 +16,15 @@ export const columns = [
   },
   {
     id: "actions",
-    header: "Aksi",
+    // 1. Membuat Header teks rata kanan
+    header: () => <div className="text-right">Aksi</div>,
     cell: ({ row }) => {
       const product = row.original;
 
       return (
-        <div className="flex gap-2">
-          <Button size="sm" variant="outline" asChild>
+        // 2. Membuat container tombol rata kanan (justify-end)
+        <div className="flex justify-end gap-2">
+          <Button size="sm" variant="outline" asChild className="h-8">
             <Link href={`/product/edit/${product.id}`}>Edit</Link>
           </Button>
 

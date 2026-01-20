@@ -1,19 +1,20 @@
-import "server-only";
-import { PrismaClient } from "../generated/prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import { PrismaClient } from "@prisma/client";
+import mysql from "mysql2/promise";
 import "server-only";
+
+const connectionString = process.env.DATABASE_URL;
+
+// Letakkan pool di luar singleton agar tetap satu instance
+const pool = mysql.createPool({
+  uri: connectionString,
+  connectionLimit: 10,
+  connectTimeout: 20000, // Tambah waktu timeout jadi 20 detik
+});
+
 const prismaClientSingleton = () => {
-  // Ambil URL dari .env
-  const url = process.env.DATABASE_URL;
-
-  // PENTING: Masukkan url ke dalam constructor adapter
-  const adapter = new PrismaMariaDb(url);
-
-  return new PrismaClient({
-    adapter,
-    // Tambahkan log untuk melihat jika ada kendala koneksi di terminal
-    log: ["query", "error", "warn"],
-  });
+  const adapter = new PrismaMariaDb(pool);
+  return new PrismaClient({ adapter });
 };
 
 const globalForPrisma = globalThis;

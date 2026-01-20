@@ -1,41 +1,23 @@
-// Hanya Tiga tugas
-// submit
-// handle server response
-// tampilkan toast
-
 "use client";
 
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { z } from "zod";
+import { Loader2, SendHorizontal, X } from "lucide-react"; // Tambah ikon X
 
 export function BaseForm({
-  action, // Server Action
-  schema, // Zod schema
+  action,
   submitLabel = "Simpan",
   successMessage = "Berhasil disimpan",
   children,
 }) {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
-    const values = Object.fromEntries(formData.entries());
-
-    // Validasi Zod
-    if (schema) {
-      const parseResult = schema.safeParse(values);
-      if (!parseResult.success) {
-        const firstError = Object.values(
-          parseResult.error.flatten().fieldErrors
-        )[0];
-        toast.error(firstError?.[0] || "Data tidak valid");
-        return;
-      }
-    }
 
     startTransition(async () => {
       try {
@@ -43,21 +25,64 @@ export function BaseForm({
 
         if (result?.success) {
           toast.success(successMessage);
+          setTimeout(() => {
+            router.push("/product");
+            router.refresh();
+          }, 1000);
         } else {
           toast.error(result?.message || "Terjadi kesalahan");
         }
       } catch (err) {
-        toast.error(err.message || "Terjadi kesalahan server");
+        toast.error("Terjadi kesalahan server");
       }
     });
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {children}
-      <Button type="submit" disabled={isPending}>
-        {isPending ? "Menyimpan..." : submitLabel}
-      </Button>
-    </form>
+    <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-xl shadow-slate-100/50 max-w-lg mx-auto transition-all duration-300 hover:shadow-2xl hover:shadow-slate-200/50">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="space-y-4">{children}</div>
+
+        {/* Container untuk Tombol Group */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          {/* Tombol Batal - Muncul di sebelah kiri pada desktop */}
+          <Button
+            type="button" // Wajib type="button" agar tidak men-submit form
+            variant="outline"
+            disabled={isPending}
+            onClick={() => router.back()} // Kembali ke halaman sebelumnya
+            className="flex-1 h-11 border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all active:scale-[0.98]"
+          >
+            <div className="flex items-center gap-2">
+              <X className="h-4 w-4 opacity-70" />
+              <span>Batal</span>
+            </div>
+          </Button>
+
+          {/* Tombol Simpan */}
+          <Button
+            type="submit"
+            disabled={isPending}
+            className={`flex-2 h-11 text-base font-medium transition-all active:scale-[0.98] ${
+              isPending
+                ? "bg-slate-400 text-white"
+                : "bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-200"
+            }`}
+          >
+            {isPending ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-5 w-5 animate-spin" />
+                <span>Memproses...</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span>{submitLabel}</span>
+                <SendHorizontal className="h-4 w-4 opacity-80" />
+              </div>
+            )}
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 }
