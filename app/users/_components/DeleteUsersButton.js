@@ -1,0 +1,47 @@
+"use client";
+
+import { deleteUsers } from "@/app/services/usersServices";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
+
+export function DeleteUsersButton({ usersId }) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const handleDelete = () => {
+    toast.warning("Hapus produk ini?", {
+      description: "Tindakan ini tidak bisa dibatalkan.",
+      action: {
+        label: isPending ? "Menghapus..." : "Hapus",
+        onClick: () =>
+          startTransition(async () => {
+            try {
+              const result = await deleteUsers(usersId);
+
+              if (result?.success === false) {
+                throw new Error(result.message);
+              }
+
+              toast.success("Produk berhasil dihapus");
+              router.refresh();
+            } catch (error) {
+              toast.error(error?.message || "Gagal menghapus produk");
+            }
+          }),
+      },
+    });
+  };
+
+  return (
+    <Button
+      size="sm"
+      variant="destructive"
+      disabled={isPending}
+      onClick={handleDelete}
+    >
+      {isPending ? "Menghapus..." : "Hapus"}
+    </Button>
+  );
+}

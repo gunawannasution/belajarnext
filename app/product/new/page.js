@@ -1,7 +1,7 @@
 // app/product/create/page.js
+import { createProductAction } from "@/app/actions/productActions";
 import { BaseForm } from "@/components/form/BaseForm";
 import { InputField } from "@/components/form/field";
-import { createProductAction } from "@/app/actions/productActions";
 
 export default function CreateProductPage() {
   return (
@@ -9,7 +9,7 @@ export default function CreateProductPage() {
     <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
       {/* Header Section yang simetris dengan gaya halaman Edit */}
       <div className="max-w-lg mx-auto mb-8">
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+        <h1 className="text-2xl font-extrabold tracking-tight text-slate-900">
           Tambah Produk
         </h1>
         <p className="text-slate-500 mt-2">

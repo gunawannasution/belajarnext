@@ -5,26 +5,16 @@ import { Plus } from "lucide-react";
 import { cookies } from "next/headers"; // 1. Tambahkan import cookies
 import Link from "next/link";
 import { DataTable } from "../../components/datatable";
-import { getProducts } from "../services/productService";
+import { getUser } from "../services/usersServices";
 import { columns } from "./_components/columns";
 
-export default async function ProductsPage() {
-  const products = await getProducts();
+export default async function UserPage() {
+  const users = await getUser()
 
   // 2. Ambil data session dari cookies
   const cookieStore = await cookies();
   const session = cookieStore.get("session");
   
-  // // 3. Ubah string JSON dari cookie menjadi objek JavaScript
-  // let user = null;
-  // if (session) {
-  //   try {
-  //     user = JSON.parse(session.value);
-  //   } catch (e) {
-  //     user = null;
-  //   }
-  // }
-
   return (
     <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
       {/* Header Container */}
@@ -39,7 +29,7 @@ export default async function ProductsPage() {
         </div>
 
         <Link
-          href="/product/new"
+          href="/users/new"
           className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-200 hover:bg-indigo-700 transition-all active:scale-95 gap-2"
         >
           <Plus className="h-4 w-4" />
@@ -49,7 +39,7 @@ export default async function ProductsPage() {
 
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="p-4">
-          <DataTable columns={columns} data={products} />
+          <DataTable columns={columns} data={users} />
         </div>
       </div>
     </div>

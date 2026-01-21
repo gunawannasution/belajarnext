@@ -1,15 +1,17 @@
 "use client";
 
-import { useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Loader2, SendHorizontal, X } from "lucide-react"; // Tambah ikon X
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 export function BaseForm({
   action,
   submitLabel = "Simpan",
   successMessage = "Berhasil disimpan",
+  redirectTo = "/", // 1. Tambahkan prop baru dengan default value
+
   children,
 }) {
   const [isPending, startTransition] = useTransition();
@@ -26,7 +28,7 @@ export function BaseForm({
         if (result?.success) {
           toast.success(successMessage);
           setTimeout(() => {
-            router.push("/product");
+            router.push(redirectTo);
             router.refresh();
           }, 1000);
         } else {
