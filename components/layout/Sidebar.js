@@ -20,9 +20,9 @@ export function Sidebar({ user }) {
   const pathname = usePathname();
 
   const menuItems = [
-    { name: "Dashboard", href: "/product", icon: LayoutDashboard },
-    { name: "Inventaris", href: "/product/inventory", icon: Package },
-    { name: "Pengguna", href: "/users", icon: Users, adminOnly: true },
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Products", href: "/dashboard/products", icon: Package },
+    { name: "Pengguna", href: "/dashboard/users", icon: Users, adminOnly: true },
     { name: "Pengaturan", href: "/settings", icon: Settings },
   ];
 

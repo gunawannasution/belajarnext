@@ -12,7 +12,7 @@ export default function CreateUserPage(){
         <p className="text-slate-500 mb-2"> Tambah user disini</p>
       </div>
       <div>
-        <BaseForm action={CreateUserActions} submitLabel="Tambah User" successMessage="Berhasil tambah user" redirectTo="/users">
+        <BaseForm action={CreateUserActions} submitLabel="Tambah User" successMessage="Berhasil tambah user" redirectTo="/dashboard/users">
         <div>
         <InputField
           name="name"

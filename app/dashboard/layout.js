@@ -18,6 +18,7 @@ export default async function ProductLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-slate-50/50">
+      {/* <Navbar/> */}
       <Sidebar user={user} />
       
       {/* md:ml-72 memberikan ruang agar konten tidak tertutup sidebar di desktop */}

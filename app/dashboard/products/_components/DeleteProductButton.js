@@ -1,12 +1,12 @@
 "use client";
 
-import { deleteUsers } from "@/app/services/usersServices";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
+import { deleteProductAction } from "../../../actions/productActions";
 
-export function DeleteUsersButton({ usersId }) {
+export function DeleteProductButton({ productId }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -18,7 +18,7 @@ export function DeleteUsersButton({ usersId }) {
         onClick: () =>
           startTransition(async () => {
             try {
-              const result = await deleteUsers(usersId);
+              const result = await deleteProductAction(productId);
 
               if (result?.success === false) {
                 throw new Error(result.message);

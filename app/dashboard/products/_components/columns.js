@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { DeleteProductButton } from "./DeleteProductButton";
 
 export const columns = [
@@ -25,7 +25,7 @@ export const columns = [
         // 2. Membuat container tombol rata kanan (justify-end)
         <div className="flex justify-end gap-2">
           <Button size="sm" variant="outline" asChild className="h-8">
-            <Link href={`/product/edit/${product.id}`}>Edit</Link>
+            <Link href={`/dashboard/products/edit/${product.id}`}>Edit</Link>
           </Button>
 
           <DeleteProductButton productId={product.id} />

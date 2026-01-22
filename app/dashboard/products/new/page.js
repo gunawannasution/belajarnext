@@ -23,6 +23,7 @@ export default function CreateProductPage() {
           action={createProductAction}
           submitLabel="Tambah Produk"
           successMessage="Produk baru berhasil ditambahkan!"
+          redirectTo="/dashboard/products"
         >
           {/* Card pembungkus input agar terlihat lebih rapi dan "clean" */}
           <div className="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-2">

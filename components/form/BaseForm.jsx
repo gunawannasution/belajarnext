@@ -10,7 +10,7 @@ export function BaseForm({
   action,
   submitLabel = "Simpan",
   successMessage = "Berhasil disimpan",
-  redirectTo = "/", // 1. Tambahkan prop baru dengan default value
+  redirectTo = "/dashboard", // 1. Tambahkan prop baru dengan default value
 
   children,
 }) {
@@ -41,7 +41,7 @@ export function BaseForm({
   }
 
   return (
-    <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-xl shadow-slate-100/50 max-w-lg mx-auto transition-all duration-300 hover:shadow-2xl hover:shadow-slate-200/50">
+    <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-xl shadow-slate-100/50 max-w-lg  transition-all duration-300 hover:shadow-2xl hover:shadow-slate-200/50">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">{children}</div>
 

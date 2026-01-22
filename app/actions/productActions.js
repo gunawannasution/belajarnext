@@ -3,10 +3,8 @@
 import { revalidatePath } from "next/cache";
 import {
   createProduct,
-  updateProduct,
   deleteProduct,
-  // Asumsi ada fungsi findProductByName untuk validasi duplikat
-  getProductByName,
+  updateProduct
 } from "../services/productService";
 
 // Helper yang konsisten
@@ -29,7 +27,7 @@ export async function createProductAction(formData) {
     const product = await createProduct({ nama });
 
     // 3. Revalidate Path agar data di client langsung sinkron
-    revalidatePath("/product");
+    revalidatePath("/dashboard/products");
     return success(product);
   } catch (error) {
     console.error("[CREATE_PRODUCT_ERROR]:", error);
@@ -51,8 +49,8 @@ export async function updateProductAction(id, formData) {
     const product = await updateProduct(numericId, { nama });
 
     // Revalidate halaman list dan halaman detail produk (jika ada)
-    revalidatePath("/product");
-    revalidatePath(`/product/${numericId}/edit`);
+    revalidatePath("/dashboard/products");
+    revalidatePath(`/dashboard/products/${numericId}/edit`);
 
     return success(product);
   } catch (error) {
@@ -69,7 +67,7 @@ export async function deleteProductAction(id) {
   try {
     await deleteProduct(numericId);
 
-    revalidatePath("/product");
+    revalidatePath("/dashboard/products");
     return success();
   } catch (error) {
     console.error("[DELETE_PRODUCT_ERROR]:", error);
